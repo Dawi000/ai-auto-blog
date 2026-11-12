@@ -13,7 +13,7 @@ TOPICS = [
 def main():
     topic = random.choice(TOPICS)
     prompt = f"You are a human blogger from Pakistan. Topic: {topic}. Write 800 words in ENGLISH, human style, H1 title, H2, H3, bullets, short paras, end with 3 FAQs + verdict. HTML only. No AI words like delve, unleash."
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
     headers = {"x-goog-api-key": GEMINI_KEY, "Content-Type": "application/json"}
     data = {"contents": [{"parts": [{"text": prompt}]}]}
     r = requests.post(url, headers=headers, json=data, timeout=60)
