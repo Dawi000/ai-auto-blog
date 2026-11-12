@@ -1,4 +1,6 @@
 name: Daily AI Blog Post
+permissions:
+  contents: write
 on:
   schedule:
     - cron: '0 5 * * *'
