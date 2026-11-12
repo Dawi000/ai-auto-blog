@@ -5,7 +5,7 @@ import google.generativeai as genai
 
 # 1. API KEY - GitHub Secrets se aayegi
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("gemini-2.0-flash")
+model = genai.GenerativeModel("gemini-3.8-flash")
 
 # 2. TUMHARE 12 TOPICS
 TOPICS = [
