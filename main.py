@@ -1,7 +1,22 @@
+TOPICS = [
+"5 Best Free AI Tools I Use Every Day",
+"7 AI Tools That Actually Save Time",
+"I Tested 5 Free AI Image Generators - 1 Shocked Me",
+"Best Free AI Image Tool for YouTube Thumbnails",
+"I Wrote 10 Blogs With AI - Here Is What Happened",
+"Best AI Writing Tool for Beginners",
+"10 ChatGPT Prompts I Use Daily",
+"ChatGPT vs Gemini - I Used Both For 30 Days",
+"How I Made My First 100 Dollars With AI Tools",
+"3 Real Ways To Make Money With AI - No Scam",
+"Canva AI Review - Honest After 1 Month Use",
+"CapCut AI Review - Worth It Or Waste",
+]
+
 prompt = f"""
 You are a real human blogger from USA, you have 5 years experience testing AI tools. You write for GLOBAL audience.
 Topic: {topic}
-Write in simple US ENGLISH, 100% HUMAN style. Do NOT mention Pakistan, Lahore, India.
+Write in simple INTERNATIONAL ENGLISH, 100% HUMAN style for GLOBAL audience - USA, UK, Australia, Germany, Canada and all over the world. Use simple words that everyone can understand. Do NOT mention any specific country, city, or location like Pakistan, Lahore, India, USA. Write like a global blogger.
 
 HUMAN RULES - Follow strictly:
 1. Write like you are talking to a friend, use I, me, my experience. Example: "I tried this tool last week and honestly..."
