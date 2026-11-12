@@ -1,4 +1,4 @@
-import os, random, datetime, requests, json, time
+import os, random, datetime, requests, json, time, re
 
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY").strip()
 
@@ -14,7 +14,20 @@ MODELS = ["gemini-3.8-flash", "gemini-2.5-flash-lite", "gemini-3-flash-preview"]
 
 def main():
     topic = random.choice(TOPICS)
-prompt = f"You are an expert tech blogger from USA writing for a GLOBAL audience. Topic: {topic}. Write 800 words in simple US ENGLISH. Do NOT mention Pakistan, Lahore, India, or any specific country. Use dollars ($), global examples, and write for readers in USA, UK, Canada, Australia and all over the world. Use H1 title, H2, H3, bullets, short paras, end with 3 FAQs + verdict. HTML only."
+    prompt = f"""
+    You are an expert SEO blogger from USA writing for GLOBAL audience.
+    Topic: {topic}
+    Write in simple US ENGLISH. Do NOT mention Pakistan, Lahore, India, or any country.
+    
+    You MUST return in this exact format:
+    SEO_TITLE: [60 characters catchy SEO title with main keyword]
+    META_DESCRIPTION: [155 characters SEO description]
+    IMAGE_ALT: [SEO image description, 10 words]
+    TAGS: [tag1, tag2, tag3, tag4, tag5]
+    ---
+    Then write 800 words HTML blog: H1 title, H2, H3, bullets, short paras, end with 3 FAQs + verdict.
+    Use dollars ($), global examples. HTML only.
+    """
     headers = {"x-goog-api-key": GEMINI_KEY, "Content-Type": "application/json"}
     data = {"contents": [{"parts": [{"text": prompt}]}]}
 
@@ -41,12 +54,41 @@ prompt = f"You are an expert tech blogger from USA writing for a GLOBAL audience
     if not content:
         raise SystemExit("API failed after all retries")
 
+    # SEO parts nikalna
+    seo_title = topic
+    meta_desc = ""
+    img_alt = topic
+    tags = ""
+    try:
+        if "SEO_TITLE:" in content:
+            seo_title = content.split("SEO_TITLE:")[1].split("\n")[0].strip()
+        if "META_DESCRIPTION:" in content:
+            meta_desc = content.split("META_DESCRIPTION:")[1].split("\n")[0].strip()
+        if "IMAGE_ALT:" in content:
+            img_alt = content.split("IMAGE_ALT:")[1].split("\n")[0].strip()
+        if "TAGS:" in content:
+            tags = content.split("TAGS:")[1].split("\n")[0].strip()
+        if "---" in content:
+            content = content.split("---",1)[1]
+    except:
+        pass
+
     t = topic.replace(" ", "%20")
     img = f"https://image.pollinations.ai/prompt/{t}%20tech%20minimal?width=800&height=450&nologo=true"
-    final = f'<p><img src="{img}" style="width:100%;border-radius:12px" /></p>\n' + content
+    
+    final = f"""<!-- SEO TITLE: {seo_title} -->
+<!-- META DESCRIPTION: {meta_desc} -->
+<!-- TAGS: {tags} -->
+<h1>{seo_title}</h1>
+<p><img src="{img}" alt="{img_alt}" title="{img_alt}" style="width:100%;border-radius:12px" /></p>
+<p><em>Image: {img_alt}</em></p>
+{content}
+<hr>
+<p><b>Tags:</b> {tags}</p>
+"""
     fname = f"post-{datetime.date.today()}.html"
     with open(fname, "w", encoding="utf-8") as f:
         f.write(final)
-    print(f"Done: {fname}")
+    print(f"Done: {fname} | SEO: {seo_title}")
 
 main()
