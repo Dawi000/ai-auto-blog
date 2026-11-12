@@ -67,7 +67,16 @@ Use dollars ($).
 
 # 5. AI SE LIKHWAO
 print(f"Writing about: {topic} | Label: {label}")
-response = model.generate_content(prompt)
+# 3 BAAR TRY KARO - AGAR GOOGLE LATE HO TO
+import time
+for i in range(3):
+    try:
+        print(f"Trying... {i+1} baar")
+        response = model.generate_content(prompt)
+        break
+    except Exception as e:
+        print(f"Google busy hai, 10 sec wait... {e}")
+        time.sleep(10)
 ai_text = response.text
 
 # 6. FINAL FILE BANAO - LABEL KE SAATH
