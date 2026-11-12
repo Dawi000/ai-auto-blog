@@ -14,7 +14,7 @@ MODELS = ["gemini-3.8-flash", "gemini-2.5-flash-lite", "gemini-3-flash-preview"]
 
 def main():
     topic = random.choice(TOPICS)
-    prompt = f"You are a human blogger from Pakistan. Topic: {topic}. Write 800 words in ENGLISH, human style, H1 title, H2, H3, bullets, short paras, end with 3 FAQs + verdict. HTML only. No AI words like delve, unleash."
+prompt = f"You are an expert tech blogger from USA writing for a GLOBAL audience. Topic: {topic}. Write 800 words in simple US ENGLISH. Do NOT mention Pakistan, Lahore, India, or any specific country. Use dollars ($), global examples, and write for readers in USA, UK, Canada, Australia and all over the world. Use H1 title, H2, H3, bullets, short paras, end with 3 FAQs + verdict. HTML only."
     headers = {"x-goog-api-key": GEMINI_KEY, "Content-Type": "application/json"}
     data = {"contents": [{"parts": [{"text": prompt}]}]}
 
