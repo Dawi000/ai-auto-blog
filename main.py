@@ -1,5 +1,5 @@
 import os, random, datetime
-import google.generativeai as genai
+from google import genai
 
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
 
@@ -13,8 +13,7 @@ TOPICS = [
 "AI Tools for Resume Writing That Get You Hired"
 ]
 
-genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+client = genai.Client(api_key=GEMINI_KEY)
 
 HUMAN_PROMPT = """
 You are a human blogger from Pakistan writing for AI Tools Nest.
@@ -28,7 +27,6 @@ Write in ENGLISH, human style, 800 words.
 - No AI words: delve, unleash, revolutionize
 - End with 3 FAQs + verdict
 - HTML format only
-- After write ---META--- and 150 char meta description
 """
 
 def get_image(title):
@@ -38,7 +36,7 @@ def get_image(title):
 def main():
     topic = random.choice(TOPICS)
     prompt = HUMAN_PROMPT.format(topic=topic)
-    res = model.generate_content(prompt)
+    res = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
     content = res.text
     img = get_image(topic)
     final = f'<p><img src="{img}" style="width:100%;border-radius:12px" /></p>\n' + content
