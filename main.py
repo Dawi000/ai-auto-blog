@@ -1,3 +1,13 @@
+import os
+import random
+import datetime
+import google.generativeai as genai
+
+# 1. API KEY - GitHub Secrets se aayegi
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+model = genai.GenerativeModel("gemini-2.0-flash")
+
+# 2. TUMHARE 12 TOPICS
 TOPICS = [
 "5 Best Free AI Tools I Use Every Day",
 "7 AI Tools That Actually Save Time",
@@ -13,6 +23,23 @@ TOPICS = [
 "CapCut AI Review - Worth It Or Waste",
 ]
 
+# 3. AAJ KA TOPIC CHUNO + LABEL BANAO
+topic = random.choice(TOPICS)
+
+if "Image" in topic:
+    label = "AI Image Tools"
+elif "Writing" in topic or "Blogs With AI" in topic:
+    label = "AI Writing Tools"
+elif "ChatGPT" in topic or "Gemini" in topic:
+    label = "ChatGPT"
+elif "Money" in topic or "100 Dollars" in topic:
+    label = "Make Money"
+elif "Review" in topic or "Canva" in topic or "CapCut" in topic:
+    label = "Reviews"
+else:
+    label = "AI Tools"
+
+# 4. HUMAN PROMPT - GLOBAL AUDIENCE
 prompt = f"""
 You are a real human blogger from USA, you have 5 years experience testing AI tools. You write for GLOBAL audience.
 Topic: {topic}
@@ -37,3 +64,23 @@ TAGS: [5 tags]
 Then 800 words HTML: H1, H2, H3, bullets, 1 comparison table, 3 FAQs + Final Verdict with your honest opinion.
 Use dollars ($).
 """
+
+# 5. AI SE LIKHWAO
+print(f"Writing about: {topic} | Label: {label}")
+response = model.generate_content(prompt)
+ai_text = response.text
+
+# 6. FINAL FILE BANAO - LABEL KE SAATH
+final = f"""<!-- BLOGGER LABEL: {label} -->
+<!-- TOPIC: {topic} -->
+{ai_text}
+"""
+
+# 7. FILE SAVE KARO
+today = datetime.date.today().strftime("%Y-%m-%d")
+os.makedirs("output", exist_ok=True)
+filename = f"output/blog-{today}.md"
+with open(filename, "w", encoding="utf-8") as f:
+    f.write(final)
+
+print(f"Done! Saved to {filename}")
