@@ -1,0 +1,26 @@
+name: Daily AI Blog Post
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install lib
+        run: pip install google-generativeai requests
+      - name: Generate Post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
+      - name: Save Post
+        run: |
+          git config user.name "AI Bot"
+          git config user.email "bot@aitoolnest.com"
+          git add .
+          git commit -m "auto post" || true
+          git push
