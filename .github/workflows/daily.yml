@@ -12,7 +12,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install lib
-        run: pip install google-genai requests
+        run: pip install requests
       - name: Generate Post
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
